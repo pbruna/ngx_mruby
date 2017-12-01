@@ -63,8 +63,14 @@ static mrb_value ngx_mrb_add_listener(mrb_state *mrb, mrb_value self)
   }
 
   ngx_memzero(&lsopt, sizeof(ngx_http_listen_opt_t));
+  
+// Nginx version that renamed "u" to "sockaddr" in listen options types
+// see: https://github.com/nginx/nginx/commit/5b267a55bc27f35f38d6d04d2f6284ed4d6156c0
+#if (ngx_version < NGINX_SOCKADDR_VER)
+  ngx_memcpy(&lsopt.u.sockaddr, &u.sockaddr, u.socklen);
+#else
   ngx_memcpy(&lsopt.sockaddr.sockaddr, &u.sockaddr, u.socklen);
-
+#endif
   lsopt.socklen = u.socklen;
   lsopt.backlog = NGX_LISTEN_BACKLOG;
   lsopt.rcvbuf = -1;

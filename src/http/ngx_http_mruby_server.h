@@ -6,6 +6,7 @@
 
 #ifndef NGX_HTTP_MRUBY_SERVER_H
 #define NGX_HTTP_MRUBY_SERVER_H
+#define NGINX_SOCKADDR_VER 1011000
 
 #include <mruby.h>
 #include <mruby/hash.h>
